@@ -86,3 +86,7 @@ document.addEventListener('change', () => {
   const statisticSelect = document.getElementById('statistics-select').value;
   showOnly(statisticSelect);
 });
+
+document.addEventListener('keydown', (event) => {
+  if (event.key == 'Enter') document.getElementById('btn').click();
+});
