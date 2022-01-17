@@ -70,13 +70,15 @@ function calculate() {
       const percentileChecked = document.getElementById('percentile-checkbox').checked,
         numSet = document.getElementById('percentile-number-set').value,
         val = document.getElementById('percentile-value').value;
-      result.textContent = `${main_functions.prototype.getPercentile(numSet, val, percentileChecked)} %`;
+      result.innerText = `${main_functions.prototype.getPercentile(numSet, val, percentileChecked)} %
+      \nAverage: ${main_functions.prototype.getAverage(numSet)}`;
       break;
     }
     case 'standard-deviation': {
       const standardDeviationChecked = document.getElementById('standard-deviation-checkbox').checked,
         numset = document.getElementById('standard-deviation-number-set').value;
-      result.textContent = `Standard deviation: ${main_functions.prototype.getStandardDeviation(numset, standardDeviationChecked)}`;
+      result.innerText = `Standard deviation: ${main_functions.prototype.getStandardDeviation(numset, standardDeviationChecked)}
+      \nAverage: ${main_functions.prototype.getAverage(numset)}`;
       break;
     }
   }
