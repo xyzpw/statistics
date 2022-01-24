@@ -5,10 +5,11 @@
     <link rel="stylesheet" href="src/style.css"/>
     <script src="src/script.js"></script>
   </head>
-  <head>
+  <body>
     <select id="statistics-select">
       <option value="percentile">Percentile</option>
       <option value="standard-deviation">Standard deviation</option>
+      <option value="p-at-least-once">P(at least once)</option>
     </select> <br/> <br/>
     <div id="wrapper">
       <div id="percentile">
@@ -18,13 +19,21 @@
         <input id="percentile-value"/> <br/> <br/>
         <label>Percentile at or below</label> <input id="percentile-checkbox" type="checkbox" checked/>
       </div>
+
       <div id="standard-deviation" style="visibility: hidden">
         <label>Number set</label>
         <input id="standard-deviation-number-set" placeholder="1, 2, 3"/> <br/> <br/>
         <label>Sample</label> <input id="standard-deviation-checkbox" type="checkbox" checked/>
       </div>
+
+      <div id="p-at-least-once" style="visibility: hidden;">
+        <label>Probability</label>
+        <input id="p-at-least-once-p"/> <br/> <br/>
+        <label>Number of events</label>
+        <input id="p-at-least-once-events"/>
+      </div>
       <button id="btn" onclick="calculate();">Calculate</button>
       <p id="result"></p>
     </div>
-  </head>
+  </body>
 </html>

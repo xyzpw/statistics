@@ -47,6 +47,9 @@ class main_functions {
       }
     }
   }
+  getProbabilityAtLeastOnce(p, _events) {
+    return 1 - (1 - p)**_events;
+  }
 }
 
 function showOnly(divName) {
@@ -79,6 +82,12 @@ function calculate() {
         numset = document.getElementById('standard-deviation-number-set').value;
       result.innerText = `Standard deviation: ${main_functions.prototype.getStandardDeviation(numset, standardDeviationChecked)}
       \nAverage: ${main_functions.prototype.getAverage(numset)}`;
+      break;
+    }
+    case 'p-at-least-once': {
+      const probability = document.getElementById('p-at-least-once-p').value;
+      const _events = document.getElementById('p-at-least-once-events').value;
+      result.innerText = `${main_functions.prototype.getProbabilityAtLeastOnce(probability, _events)} %`;
       break;
     }
   }
