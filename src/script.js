@@ -87,7 +87,7 @@ function calculate() {
     case 'p-at-least-once': {
       const probability = document.getElementById('p-at-least-once-p').value;
       const _events = document.getElementById('p-at-least-once-events').value;
-      result.innerText = `${main_functions.prototype.getProbabilityAtLeastOnce(probability, _events)} %`;
+      result.innerText = `${main_functions.prototype.getProbabilityAtLeastOnce(probability, _events) * 100} %`;
       break;
     }
   }
