@@ -1,23 +1,29 @@
 body {
-  background-color: #222;
-  color: #ccc;
+    background-color: #222;
+    color: #ccc;
 }
+
 #wrapper {
-  position: relative;
+    position: relative;
 }
-#percentile, #standard-deviation {
-  position: absolute;
+
+#percentile,
+#standard-deviation {
+    position: absolute;
 }
+
 input {
-  background-color: #111;
-  color: #ccc;
+    background-color: #111;
+    color: #ccc;
 }
+
 select {
-  background-color: #111;
-  color: #ccc;
+    background-color: #111;
+    color: #ccc;
 }
-#btn {
-  background-color: #111;
-  color: #ccc;
-  margin-top: 150px;
+
+button {
+    background-color: #111;
+    color: #ccc;
+    margin-top: 50px;
 }
