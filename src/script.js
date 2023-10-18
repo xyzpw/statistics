@@ -1,115 +1,151 @@
-let statisticSelect;
+// *TODO* finish when adderall starts kicking in
 
-class main_functions {
-    getPercentile(numberSet, value, atOrBelow = true) {
-        const numberSetArray = numberSet.replace(/ /g, '').split(',').map(i => Number(i));
-        switch (atOrBelow) {
-            case true: {
-                let numbersAtOrBelow = 0;
-                numberSetArray.forEach(num => {
-                    if (num <= value) numbersAtOrBelow++;
-                });
-                const percentileAtOrBelow = numbersAtOrBelow / numberSetArray.length;
-                return percentileAtOrBelow * 100;
-            }
-            case false: {
-                let numbersBelow = 0;
-                numberSetArray.forEach(num => {
-                    if (num < value) numbersBelow++;
-                });
-                const percentileBelow = numbersBelow / numberSetArray.length;
-                return percentileBelow * 100;
-            }
-        }
-    }
-    getAverage(numberSet) {
-        const numberSetArray = numberSet.replace(/ /g, '').split(',').map(i => Number(i));
-        let sum = 0;
-        numberSetArray.forEach(num => {
-            sum += Number(num);
-        });
-        let average = sum / numberSetArray.length;
-        return average;
-    }
-    getStandardDeviation(numberSet, sample = true) {
-        const numberSetArray = numberSet.replace(/ /g, '').split(',').map(i => Number(i));
-        const average = main_functions.prototype.getAverage(numberSetArray.toString());
-        let sigma = 0;
-        numberSetArray.forEach(num => {
-            sigma += Number((num - average) ** 2);
-        });
-        switch (sample) {
-            case true: {
-                const standardDeviation = (sigma / (numberSetArray.length - 1)) ** 0.5;
-                return standardDeviation;
-            }
-            case false: {
-                const standardDeviation = (sigma / numberSetArray.length) ** 0.5;
-                return standardDeviation;
-            }
-        }
-    }
-    getProbabilityAtLeastOnce(p, _events) {
-        return 1 - (1 - p) ** _events;
-    }
-}
+let divs = Array();
 
-function showOnly(divName) {
-    let statisticOptions = document.getElementById('statistics-select').options;
-    for (key in statisticOptions) {
-        if (isNaN(key)) break;
-        if (divName == statisticOptions[key].value) {
-            document.getElementById(statisticOptions[key].value).style.visibility = 'visible';
+document.addEventListener('DOMContentLoaded', () => {
+    divs.push("stdev");
+    divs.push("score2p");
+    divs.push("binomial");
+});
+
+window.addEventListener('keydown', (k) => {
+    if (k.key === 'Enter') document.getElementById("calculate-btn").click();
+});
+
+document.addEventListener('input', () => {
+    if (document.readyState === 'complete') {
+        let divOption = document.getElementById("statistics-option").value;
+        showOnly(document.getElementById(divOption));
+        let divHeight = document.getElementById(divOption).offsetHeight;
+        document.getElementById("calculate-btn").style = `margin-top: ${divHeight}px`;
+    }
+});
+
+function showOnly(divName){
+    divs.forEach(element => {
+        if (element == divName.id){
+            document.getElementById(element).style = 'visibility: visible';
         } else {
-            document.getElementById(statisticOptions[key].value).style.visibility = 'hidden';
+            document.getElementById(element).style = 'visibility: hidden';
+        }
+    });
+}
+
+function factorial(n){
+    if (n == 0 || n == 1){
+        return 1
+    } else if (n < 0){
+        return NaN
+    }
+    for (let i = n-1; i >= 1; i--){
+        n *= i
+    }
+    return n;
+}
+
+function nCr(n, r){
+    let combinations = (factorial(n)) / (factorial(r) * factorial(n - r));
+    return combinations
+}
+
+function getAverage(numSet){
+    total = 0
+    numSet.forEach(element => {
+        total += element
+    });
+    let mean = total / numSet.length;
+    return mean;
+}
+
+function getSum(numSet){
+    let sum = 0;
+    numSet.forEach(num => {
+        sum += num;
+    });
+    return sum;
+}
+
+function getStandardDeviation(numberSet, sample=true){
+    let numberSetAverage = getAverage(numberSet);
+    let sum = 0;
+    numberSet.forEach(num => {
+        sum += Number((num - numberSetAverage)**2);
+    });
+    if (sample){
+        let sigma = (sum / (numberSet.length - 1))**.5;
+        return sigma;
+    } else{
+        let sigma = (sum / numberSet.length)**.5;
+        return sigma;
+    }
+}
+
+function getPercentileRank(numberSet, score){
+    let numbersAtOrBelowScore = 0;
+    numberSet.forEach(num => {
+        if (num <= score) {
+            ++numbersAtOrBelowScore;
+        }
+    });
+    let percentile = numbersAtOrBelowScore / numberSet.length;
+    return percentile;
+}
+
+function getBinomial(n, x, p){
+    let binomialProbability = nCr(n, x) * p**x * (1-p)**(n - x)
+    return binomialProbability
+}
+
+function getMedian(numSet){
+    numSet = numSet.sort((a,b) => a-b);
+    if (numSet.length%2 != 0){
+        let middle = Math.floor(numSet.length/2);
+        let median = numSet[middle];
+        return median;
+    } else{
+        let middle = Math.floor(numSet.length/2);
+        let median = (numSet[middle] + numSet[middle-1]) / 2;
+        return median;
+    }
+}
+
+function calculate(){
+    let uiSelect = document.getElementById("statistics-option").value;
+    switch (uiSelect){
+        case "stdev": {
+            let numSet = document.getElementById("stdev-numberset").value;
+            numSet = numSet.replace(/ /g, '').split(',').map(i => Number(i));
+            let population = document.getElementById("stdev-samplebox").checked;
+            let sigma = getStandardDeviation(numSet, population);
+            let populationSize = numSet.length;
+            let populationMin = Math.min(...numSet);
+            let populationMax = Math.max(...numSet);
+            let populationMean = getAverage(numSet);
+            let populationMedian = getMedian(numSet);
+            let resultContent = `Standard Deviation = ${sigma}
+            N=${populationSize}
+            Average=${populationMean}
+            Median=${populationMedian}
+            Minimum=${populationMin}, Maximum=${populationMax}`
+            document.getElementById("results").innerText = resultContent
+            break;
+        }
+        case "score2p": {
+            let numSet = document.getElementById("score2p-numberset").value;
+            numSet = numSet.replace(/ /g, '').split(',').map(i => Number(i));
+            let score = document.getElementById("score2p-value").value;
+            let percentile = getPercentileRank(numSet, score);
+            document.getElementById("results").textContent = `Percentile = ${percentile*100}%`;
+            break;
+        }
+        case "binomial": {
+            let p = document.getElementById("binomial-probability").value;
+            let n = document.getElementById("binomial-events").value;
+            let x = document.getElementById("binomial-successes").value;
+            let binomialProbability = getBinomial(n, x, p);
+            document.getElementById("results").textContent = `P=${binomialProbability*100}%`;
+            break;
         }
     }
 }
 
-function calculate(wrapper) {
-    const result = document.getElementById(`${wrapper}-result`);
-    console.log(result, wrapper); //debug
-    const statisticOption = document.getElementById('statistics-select').value;
-    switch (statisticOption) {
-        case 'percentile': {
-            const percentileChecked = document.getElementById('percentile-checkbox').checked,
-                numSet = document.getElementById('percentile-number-set').value,
-                numSetLength = document.getElementById("percentile-number-set").value.split(',').length,
-                numSetMin = Math.min(...document.getElementById("percentile-number-set").value.split(',')),
-                numSetMax = Math.max(...document.getElementById("percentile-number-set").value.split(','));
-                val = document.getElementById('percentile-value').value;
-                result.innerText = `${main_functions.prototype.getPercentile(numSet, val, percentileChecked)}%
-                N = ${numSetLength}
-                Average: ${main_functions.prototype.getAverage(numSet)}
-                Min ${numSetMin}, Max ${numSetMax}`;
-            break;
-        }
-        case 'standard-deviation': {
-            const standardDeviationChecked = document.getElementById('standard-deviation-checkbox').checked,
-                numset = document.getElementById('standard-deviation-number-set').value,
-                numSetLength = document.getElementById("standard-deviation-number-set").value.split(',').length,
-                numSetMin = Math.min(...document.getElementById("standard-deviation-number-set").value.split(',')),
-                numSetMax = Math.max(...document.getElementById("standard-deviation-number-set").value.split(','));
-            result.innerText = `N = ${numSetLength}
-            Standard deviation: ${main_functions.prototype.getStandardDeviation(numset, standardDeviationChecked)}
-            Average: ${main_functions.prototype.getAverage(numset)}
-            Min ${numSetMin}, Max ${numSetMax}`;
-            break;
-        }
-        case 'p-at-least-once': {
-            const probability = document.getElementById('p-at-least-once-p').value;
-            const _events = document.getElementById('p-at-least-once-events').value;
-            result.innerText = `${main_functions.prototype.getProbabilityAtLeastOnce(probability, _events) * 100} %`;
-            break;
-        }
-    }
-}
-
-document.addEventListener('change', () => {
-    statisticSelect = document.getElementById('statistics-select').value;
-    showOnly(statisticSelect);
-});
-
-document.addEventListener('keydown', (event) => {
-    if (event.key == 'Enter') document.getElementById(`${statisticSelect}-btn`).click();
-});

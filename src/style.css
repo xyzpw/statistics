@@ -1,5 +1,5 @@
 body {
-    background-color: #222;
+    background-color: #121212;
     color: #ccc;
 }
 
@@ -7,23 +7,17 @@ body {
     position: relative;
 }
 
-#percentile,
-#standard-deviation {
+.divs {
     position: absolute;
 }
 
-input {
-    background-color: #111;
+.ui {
+    background-color: #222;
     color: #ccc;
+    border-radius: 5px;
+    border-color: transparent;
 }
 
-select {
-    background-color: #111;
-    color: #ccc;
-}
-
-button {
-    background-color: #111;
-    color: #ccc;
-    margin-top: 50px;
+#calculate-btn {
+    margin-top: 68px;
 }

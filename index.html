@@ -1,48 +1,37 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="src/style.css" />
-    <script src="src/script.js"></script>
-</head>
-
-<body>
-    <select id="statistics-select">
-        <option value="percentile">Percentile</option>
-        <option value="standard-deviation">Standard deviation</option>
-        <option value="p-at-least-once">P(at least once)</option>
-    </select> <br /> <br />
-    <div id="wrapper">
-        <div id="percentile">
-            <label>Number set</label>
-            <input id="percentile-number-set" placeholder="1, 2, 3"/> <br/> <br/>
-            <label>Value</label>
-            <input id="percentile-value"/> <br/>
-            <label>Percentile at or below</label> <input id="percentile-checkbox" type="checkbox" checked />
-            <button id="percentile-btn" onclick="calculate('percentile');">Calculate</button>
-            <p id="percentile-result"></p>
-        </div>
-
-        <div id="standard-deviation" style="visibility: hidden">
-            <label>Number set</label>
-            <input id="standard-deviation-number-set" placeholder="1, 2, 3" /> <br /> <br />
-            <label>Sample</label> <input id="standard-deviation-checkbox" type="checkbox" checked />
-            <button id="standard-deviation-btn" onclick="calculate('standard-deviation');">Calculate</button>
-            <p id="standard-deviation-result"></p>
-        </div>
-
-        <div id="p-at-least-once" style="visibility: hidden;">
-            <label>Probability</label>
-            <input id="p-at-least-once-p"/> <br/>
-            <label>Number of events</label>
-            <input id="p-at-least-once-events"/>
-            <button id="p-at-least-once-btn" onclick="calculate('p-at-least-once');">Calculate</button>
-            <p id="p-at-least-once-result"></p>
-        </div>
-        <!--<button id="btn" onclick="calculate();">Calculate</button>-->
-        <!--<p id="result"></p>-->
-    </div>
-</body>
-
+    <head>
+        <script src="src/script.js"></script>
+        <link rel="stylesheet" href="src/style.css"/>
+    </head>
+    <body>
+        <select id="statistics-option" class="ui">
+            <option value="stdev">Standard Deviation</option>
+            <option value="score2p">Score Percentile</option>
+            <option value="binomial">Binomial</option>
+        </select> <br> <br>
+        <div id="wrapper">
+            <div id="stdev" class="divs" style="visibility: visible;">
+                <label>Sample/Population Values</label>
+                <input id="stdev-numberset" class="ui" placeholder="Seperate with ,"/> <br> <br>
+                Sample Standard Deviation?<input type="checkbox" id="stdev-samplebox" checked/>
+            </div>
+            <div id="score2p" class="divs" style="visibility: hidden">
+                <label>List of Scores</label>
+                <input id="score2p-numberset" class="ui" placeholder="Seperate with ,"/> <br> <br>
+                <label>Value</label>
+                <input id="score2p-value" class="ui"/> <br> <br>
+            </div>
+            <div id="binomial" class="divs" style="visibility: hidden;">
+                <label>Probability of Event</label>
+                <input id="binomial-probability" class="ui"/> <br> <br>
+                <label>Number of Events</label>
+                <input id="binomial-events" class="ui"/> <br> <br>
+                <label>Number of Successes</label>
+                <input id="binomial-successes" class="ui"/>
+            </div>
+        </div> <br>
+        <button id="calculate-btn" class="ui" onclick="calculate();">Calculate</button> <br> <br>
+        <p id="results"></p>
+    </body>
 </html>
